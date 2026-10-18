@@ -1,0 +1,21 @@
+#Makefile with variables and rules
+P=app1
+OBJECTS= app1.o part1.o
+CFLAGS= -g -Wall -O3
+LDLIBS=
+CC=gcc
+
+#Generate application
+$(P): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(P) $(OBJECTS)
+
+#Generate part1.o
+part1.o: part1.c part1.h
+	$(CC) $(CFLAGS) -c part1.c
+
+#Generate app1.o
+app1.o: app1.c part1.h
+	$(CC) $(CFLAGS) -c app1.c
+
+clean:
+	rm -f *.o $(P)

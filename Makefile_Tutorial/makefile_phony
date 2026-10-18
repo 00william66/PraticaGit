@@ -1,0 +1,27 @@
+DEFAULT_TARGET= app1
+OBJECTS= part1.o app1.o
+
+CFLAGS= -g -Wall -O3
+CC= gcc
+
+#Gerar aplicação
+$(DEFAULT_TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(DEFAULT_TARGET) $(OBJECTS)
+
+#Gerar object files
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.phony: all
+.phony: clean
+.phony: run
+
+all: clean run
+
+clean:
+	rm -f *.o $(DEFAULT_TARGET)
+
+run:
+	$(DEFAULT_TARGET)
+	./$(DEFAULT_TARGET)
+	

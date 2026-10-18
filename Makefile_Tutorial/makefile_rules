@@ -1,0 +1,27 @@
+#Makefile with variables and rules
+P=app1
+OBJECTS= app1.o part1.o
+CFLAGS= -g -Wall -O3
+LDLIBS=
+CC=gcc
+
+#Default target
+all: $(P)
+
+#Generate application
+$(P): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(P) $(OBJECTS)
+
+#Generate object files
+%.o: %.c
+	$(CC) $(FLAGS) -c $< -o $@
+
+#Dependencias explicitas
+app1.o: part1.h
+part1.o: part1.h
+
+#PHONY targets
+.PHONY: all clean
+
+clean:
+	rm -f *.o $(P)

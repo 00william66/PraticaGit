@@ -1,0 +1,11 @@
+c programming language and embedded systems
+a student should learn memory management and pointers
+pointers and arrays are fundamental in c
+real time systems require fast execution and predictable behavior
+every student can write modular code using header files
+
+the compiler translates c code into machine instructions
+unit testing with unity helps verify software components
+dynamic memory allocation requires careful free operations
+each student analyzes files lines words and characters
+practice makes better code and fewer bugs
