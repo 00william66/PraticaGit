@@ -56,7 +56,9 @@ int main(int argc, char *argv[])
 
                     } else {
                         /*Espera que o rmdir termine*/
-                        wait(NULL);
+                        wait(NULL); /*Aqui como forcei a remover a pasta não preciso de confirmar se ele conseguiu
+                        removê-la. Estaa linha apenas espera que o filho termine mas descarta o codigo de saida do rm -r
+                        pois não é informação necessária*/
 
                     }
                     break;
