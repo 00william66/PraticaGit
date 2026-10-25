@@ -7,7 +7,8 @@
 int main(void)
 {
 /* Executes the process status command with all-user, detailed, unattached flags */
-    system("ls");
+    system("ls"); /*era para correr o ps mas dava output gigante, para
+    ver que funciona usei só o ls*/
     return 0;
 }
 
