@@ -25,7 +25,7 @@ int main(void){
     printf("Consumer: Waiting for producer to open fifo...\n");
     fd = open(FIFO_PATH, O_RDONLY);
     if(fd == -1){
-        perror("Error opening fifo to write\n");
+        perror("Error opening fifo to read\n");
         return 1;
     }
 
