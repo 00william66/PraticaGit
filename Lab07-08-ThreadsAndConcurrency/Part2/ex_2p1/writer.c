@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/mman.h>
+#include <err.h>
+
 
 volatile sig_atomic_t running = 1;
 
@@ -55,13 +57,15 @@ int main(int argc, char *argv[])
 
     /*INICIALIZAR CONTADOR A 0*/
     *counter = 0;
-    printf("Writer initializing... Press Ctrl+C to terminate\n");
+    printf("Initializing writer... Press Ctrl+C to terminate\n");
     
-    while(1){
+    while(running){
         (*counter)++;
         printf("Writer: Updated time-> %ds\n", *counter);
         sleep(1);
     }
+
+    printf("Terminating writer...\n");
 
     munmap(counter, sizeof(int));
     close(fd);
