@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
     printf("Terminating writer...\n");
 
-    munmap(counter, sizeof(int));
+    munmap((void *)counter, sizeof(int));
     close(fd);
     shm_unlink(shmpath);
     return 0;
