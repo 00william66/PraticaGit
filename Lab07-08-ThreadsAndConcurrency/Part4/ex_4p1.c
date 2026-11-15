@@ -47,7 +47,7 @@ void *increment_thread(void *arg){
         sleep(1);
         counter++;
     }
-    return NULL;
+    pthread_exit(NULL);
 }
 
 void *print_thread(void *arg){
@@ -61,5 +61,5 @@ void *print_thread(void *arg){
         }
         usleep(1000);
     }
-    return NULL;
+    pthread_exit(NULL);
 }

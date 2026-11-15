@@ -55,7 +55,7 @@ void *increment_thread(void *arg){
         counter++;
         sem_post(&sem);
     }
-    return NULL;
+    pthread_exit(NULL);
 }
 
 void *print_thread(void *arg){
@@ -65,5 +65,5 @@ void *print_thread(void *arg){
         sem_wait(&sem);
         printf("Counter = %d\n", counter);
     }
-    return NULL;
+    pthread_exit(NULL);
 }
