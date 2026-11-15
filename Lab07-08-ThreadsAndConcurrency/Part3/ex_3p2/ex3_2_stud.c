@@ -17,6 +17,70 @@ typedef struct {
     int * hist;				// For histogram computation
 } Stats_t;
 
+
+static inline uint64_t ts_to_ns(const struct timespec *t);
+static inline double ns_to_s(uint64_t ns);
+static double rand_uniform_range(int range);
+static void fill_random(double *a, int n,int range);
+int compare_doubles(const void *a, const void *b);
+void compute_all_one_thread(const double *a, int n, Stats_t *s);
+
+
+
+/* 
+ * The main() function
+ */
+int main() {
+    int N = 100000;     	// default array size
+    long seed = 0;          // default seed; 0 means use time(NULL)
+	double *arr;			// Pointer to array
+	struct timespec t0, t1;	// For measuring computation time
+	Stats_t s1T;			// Computation results for single thread version
+	
+	uint64_t totalA_ns;		// Time taken
+    
+    // Init seed with a fixed value to make it repeatible
+    srand48(seed);
+
+    // Allocate memory for the array
+    arr = (double*)malloc(N * sizeof(double));
+    if (!arr) {
+        fprintf(stderr, "Allocation failed for N=%u\n", N);
+        return 1;
+    }
+
+    // Fill once; we’ll reuse the same data for fairness between approaches
+    fill_random(arr, N, RANGE);
+    
+    // Prepare input/output args
+    s1T.sortArr = (double *)malloc(N * sizeof(double));
+    s1T.matTransf = (double *)malloc(N * sizeof(double));
+    s1T.hist = (int *)malloc(NBINS * sizeof(int));
+    	
+	// Execute processing - one thread
+	clock_gettime(CLOCK_MONOTONIC, &t0);
+    compute_all_one_thread(arr, N, &s1T);
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    totalA_ns = (ts_to_ns(&t1) - ts_to_ns(&t0));
+	
+    // After all timing is complete, we can safely print without affecting measured times
+    printf("Single thread:\n");
+    printf("Time taken was: %ld\n",totalA_ns);
+
+
+	// Done! Release resources and finish
+    free(arr);
+    free(s1T.sortArr);
+    free(s1T.matTransf);
+    free(s1T.hist);
+    return 0;
+}
+
+
+
+
+
+
 /* 
  * Auxiliary function, to handle time and fill the array
  * 
@@ -88,51 +152,3 @@ void compute_all_one_thread(const double *a, int n, Stats_t *s) {
 }
 
 
-/* 
- * The main() function
- */
-int main() {
-    int N = 100000;     	// default array size
-    long seed = 0;          // default seed; 0 means use time(NULL)
-	double *arr;			// Pointer to array
-	struct timespec t0, t1;	// For measuring computation time
-	Stats_t s1T;			// Computation results for single thread version
-	
-	uint64_t totalA_ns;		// Time taken
-    
-    // Init seed with a fixed value to make it repeatible
-    srand48(seed);
-
-    // Allocate memory for the array
-    arr = (double*)malloc(N * sizeof(double));
-    if (!arr) {
-        fprintf(stderr, "Allocation failed for N=%u\n", N);
-        return 1;
-    }
-
-    // Fill once; we’ll reuse the same data for fairness between approaches
-    fill_random(arr, N, RANGE);
-    
-    // Prepare input/output args
-    s1T.sortArr = (double *)malloc(N * sizeof(double));
-    s1T.matTransf = (double *)malloc(N * sizeof(double));
-    s1T.hist = (int *)malloc(NBINS * sizeof(int));
-    	
-	// Execute processing - one thread
-	clock_gettime(CLOCK_MONOTONIC, &t0);
-    compute_all_one_thread(arr, N, &s1T);
-    clock_gettime(CLOCK_MONOTONIC, &t1);
-    totalA_ns = (ts_to_ns(&t1) - ts_to_ns(&t0));
-	
-    // After all timing is complete, we can safely print without affecting measured times
-    printf("Single thread:\n");
-    printf("Time taken was: %ld\n",totalA_ns);
-
-
-	// Done! Release resources and finish
-    free(arr);
-    free(s1T.sortArr);
-    free(s1T.matTransf);
-    free(s1T.hist);
-    return 0;
-}
